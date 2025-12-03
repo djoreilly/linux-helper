@@ -3,6 +3,7 @@ from google.adk.agents import Agent
 from .. import MODEL
 from ..tools.memory import free_memory
 from ..tools.top import top_processes_by_cpu, top_processes_by_memory
+from ..tools.systemd import failed_systemd_units
 
 general_health_agent = Agent(
     name="general_health",
@@ -15,5 +16,10 @@ general_health_agent = Agent(
     Report processes that are using a significant percent of memory.
     When commenting on processes, always include their pid and any pertinent information.
     """,
-    tools=[free_memory, top_processes_by_cpu, top_processes_by_memory],
+    tools=[
+        free_memory,
+        top_processes_by_cpu,
+        top_processes_by_memory,
+        failed_systemd_units,
+    ],
 )
