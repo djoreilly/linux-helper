@@ -13,8 +13,9 @@ def get_process_using_port(port: int) -> str:
     Returns:
       str: the output of the `lsof -i :<port>` command.
     """
-    cmd = f"lsof -i :{port}"
+    cmd = ["lsof", "-i", f":{port}"]
     if os.geteuid() != 0:
-        cmd = "sudo " + cmd
-    logger.info(f"Running command: f{cmd}")
-    return subprocess.getoutput(cmd)
+        cmd.insert(0, "sudo")
+    logger.info(f"Running command: {cmd}")
+    process = subprocess.run(cmd, stdout=subprocess.PIPE)
+    return process.stdout.decode("utf-8")

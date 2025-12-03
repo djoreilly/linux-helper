@@ -23,8 +23,9 @@ def get_systemctl_status(unit: str) -> str:
     Returns:
       str: the output of the `systemctl status <unit>` command.
     """
-    cmd = " ".join(["systemctl", "status", unit, "--no-pager"])
+    cmd = ["systemctl", "status", unit, "--no-pager"]
     if os.geteuid() != 0:
-        cmd = "sudo " + cmd
+        cmd.insert(0, "sudo")
     logger.info(f"Running command: {cmd}")
-    return subprocess.getoutput(cmd)
+    process = subprocess.run(cmd, stdout=subprocess.PIPE)
+    return process.stdout.decode("utf-8")
