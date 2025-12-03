@@ -1,3 +1,8 @@
-from linux_agent.agent import root_agent
+import os
 
-__all__ = ["root_agent"]
+MODEL = os.getenv("GOOGLE_GENAI_MODEL")
+if not MODEL:
+    MODEL = "gemini-2.0-flash"
+
+# MODEL needs to be defined before this import
+from . import agent  # pylint: disable=wrong-import-position
