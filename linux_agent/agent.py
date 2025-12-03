@@ -1,6 +1,6 @@
 from google.adk.agents import Agent
 from .sub_agents.general_health import general_health_agent
-
+from .sub_agents.apache import apache_agent
 from . import MODEL
 
 root_agent = Agent(
@@ -10,5 +10,5 @@ root_agent = Agent(
     instruction="""Help the user troubleshoot their linux problems.
     """,
     # automatic delegation (AutoFlow): llm considers its own instructions/tools and descriptions from sub-agents.
-    sub_agents=[general_health_agent],
+    sub_agents=[general_health_agent, apache_agent],
 )
