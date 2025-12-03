@@ -23,3 +23,29 @@ Using the ADK Dev UI:
 export GEMINI_API_KEY=
 uv run adk web
 ```
+
+## Example Interactions
+### Apache
+Break apache by taking port 80:
+```
+$ sudo systemctl stop apache2.service
+$ sudo nc -l 80 &
+$ sudo systemctl start apache2.service
+Job for apache2.service failed because the control process exited with error code.
+See "systemctl status apache2.service" and "journalctl -xeu apache2.service" for details.
+```
+
+Run the agent:
+```
+$ uv run adk run linux_agent
+...
+Running agent linux_troubleshooter, type exit to exit.
+[user]: do a health check
+[general_health]: The system has adequate free memory.
+
+The following systemd unit is in a failed state: apache2.service. I will transfer this to the apache agent.
+
+[apache_agent]: The apache2.service unit is in a failed state. I will check the status of the apache2 service.
+
+[apache_agent]: The Apache webserver failed to start because address 80 is already in use. This usually means another process is already listening on that port.
+```
