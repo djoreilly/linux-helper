@@ -10,6 +10,8 @@ uv sync
 ```
 
 ## Running the agent
+Note: [tools](tools) are used to get information from the system. These are read-only, but root is needed to get detailed information from [systemctl status](tools/systemd.py). Sudo will be tried.
+
 Using ADK CLI:
 ```
 export GEMINI_API_KEY=
