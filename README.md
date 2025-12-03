@@ -49,3 +49,23 @@ The following systemd unit is in a failed state: apache2.service. I will transfe
 
 [apache_agent]: The Apache webserver failed to start because address 80 is already in use. This usually means another process is already listening on that port.
 ```
+
+Sometimes it fails to transfer automatically to another agent. The user can nudge it, e.g.:
+```
+$ uv run adk run linux_agent
+...
+[user]: do a health check
+[general_health]: The system has adequate free memory.
+
+The following processes are using a significant amount of memory:
+*   PID 12025 (adk) is using 1.662% of memory.
+
+The following systemd units are in a failed state:
+*   apache2.service: This indicates a problem with the Apache web server.
+
+[user]: follow up on the apache problem
+[apache_agent]: The apache2.service failed to start because the address [::]:80 and 0.0.0.0:80 are already in use. This usually means another process is already listening on port 80. It could be another web server or some other application.
+
+Here's how to troubleshoot:
+...
+```
