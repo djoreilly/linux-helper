@@ -12,6 +12,11 @@ uv sync
 ## Running the agent
 Note: [tools](linux_agent/tools) are used to get information from the system. These are read-only, but root is needed to get detailed information from [systemctl status](linux_agent/tools/systemd.py). Sudo will be tried.
 
+Currently only Google models are supported. The default model is `gemini-2.0-flash` and can be overridden by setting `GOOGLE_GENAI_MODEL`:
+```
+export GOOGLE_GENAI_MODEL=gemini-2.5-flash
+```
+
 Using ADK CLI:
 ```
 export GEMINI_API_KEY=
