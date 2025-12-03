@@ -59,23 +59,18 @@ Sometimes it fails to transfer automatically to another agent. The user can nudg
 ```
 $ uv run adk run linux_agent
 ...
+Running agent linux_troubleshooter, type exit to exit.
 [user]: do a health check
-[general_health]: The `apache2.service` (PID N/A) is in a failed state.
+[general_health]: Here's a concise system health report:
 
-[user]: why
+**Problematic Processes (Memory Usage):**
+*   **adk** (PID 12569) is using 1.663% of memory.
 
-[apache_agent]: The Apache webserver failed to start because the address is already in use, specifically on ports `[::]:80` (IPv6) and `0.0.0.0:80` (IPv4). This indicates that another process is already listening on port 80. Additionally, there's an error "Unable to open logs", which might be a consequence of the server failing to start.
+**Failed Systemd Units:**
+*   **apache2.service** is in a failed state.
 
-[user]: briefy explain how i can find the process using the port
+[user]: follow up on the apache problem
 
-[apache_agent]: You can use the `lsof` or `netstat` commands.
-
-With `lsof`:
-`sudo lsof -i :80`
-
-With `netstat`:
-`sudo netstat -tulnp | grep :80`
-
-These commands will show you the process ID (PID) and the name of the program currently using port 80.
+[apache_agent]: The Apache webserver is failing to start because another process, `nc` with PID 11311 and user root, is already using port 80. To resolve this, you need to stop the `nc` process or reconfigure it to use a different port so that Apache can bind to port 80.
 [user]: exit
 ```
