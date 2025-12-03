@@ -10,7 +10,7 @@ uv sync
 ```
 
 ## Running the agent
-Note: [tools](tools) are used to get information from the system. These are read-only, but root is needed to get detailed information from [systemctl status](tools/systemd.py). Sudo will be tried.
+Note: [tools](sub_agents/tools) are used to get information from the system. These are read-only, but root is needed to get detailed information from [systemctl status](sub_agents/tools/systemd.py). Sudo will be tried.
 
 Using ADK CLI:
 ```
