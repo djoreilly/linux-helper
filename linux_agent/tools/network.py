@@ -30,8 +30,11 @@ def firewall_cmd_list_ports() -> str:
     if os.geteuid() != 0:
         cmd.insert(0, "sudo")
     logger.info(f"Running command: {cmd}")
-    process = subprocess.run(cmd, stdout=subprocess.PIPE)
-    return process.stdout.decode("utf-8")
+    try:
+        process = subprocess.run(cmd, stdout=subprocess.PIPE)
+        return process.stdout.decode("utf-8")
+    except FileNotFoundError:
+        return "firewall-cmd not found. It may not be installed."
 
 
 def firewall_cmd_list_services() -> str:
@@ -43,5 +46,8 @@ def firewall_cmd_list_services() -> str:
     if os.geteuid() != 0:
         cmd.insert(0, "sudo")
     logger.info(f"Running command: {cmd}")
-    process = subprocess.run(cmd, stdout=subprocess.PIPE)
-    return process.stdout.decode("utf-8")
+    try:
+        process = subprocess.run(cmd, stdout=subprocess.PIPE)
+        return process.stdout.decode("utf-8")
+    except FileNotFoundError:
+        return "firewall-cmd not found. It may not be installed."
