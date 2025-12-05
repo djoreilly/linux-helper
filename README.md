@@ -3,6 +3,13 @@
 AI-driven agent for troubleshooting Linux problems. Built on the [Google ADK framework](https://google.github.io/adk-docs/) as a [Multi-Agent System](https://google.github.io/adk-docs/agents/multi-agents/).
 The project structure follows the [Python Sample Agents](https://github.com/google/adk-samples/tree/main/python/agents).
 
+## Overview
+The [root_agent](linux_agent/agent.py) takes the user prompt and delegates to the [sub-agent](linux_agent/sub_agents) it thinks best based on their descriptions. The sub-agent runs with its own context and specific instructions, using its read-only tools to get information from the system.
+
+The [tools](linux_agent/tools) are very simple - each one executes a common Linux command and returns the standard output to the LLM. Since LLMs have lots of Linux commands/outputs in their training data, they are usually able to make a good determination. A sub-agent is able to transfer control to another peer sub-agent, and each one will report to the user if they find something that might be the root-cause.
+
+The assistant may propose steps to fix the problem, or the user might need to ask followup questions for that. The assistant does not make changes to the system - it's up to the user to review the output and make any changes manually.
+
 ## Installation
 This project uses [uv](https://github.com/astral-sh/uv) for dependency management which can usually be installed with your package manager.
 ```
@@ -10,7 +17,7 @@ uv sync
 ```
 
 ## Running the agent
-Note: [tools](linux_agent/tools) are used to get information from the system. These are read-only, but root is needed to get detailed information from [systemctl status](linux_agent/tools/systemd.py). Sudo will be tried.
+Note: [tools](linux_agent/tools) are used to get information from the system. These are read-only, but root is often needed to get detailed information - sudo will be tried.
 
 Currently only Google models are supported. The default model is `gemini-2.0-flash` and can be overridden by setting `GOOGLE_GENAI_MODEL`:
 ```
