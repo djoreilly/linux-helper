@@ -4,6 +4,27 @@ AI-driven agent for troubleshooting Linux problems. Built on the [Google ADK fra
 The project structure follows the [Python Sample Agents](https://github.com/google/adk-samples/tree/main/python/agents).
 
 ## Overview
+```
+                       ┌──────────────────────────────────────┐
+                       │               root_agent             │
+                       │                                      │
+                       │ instruction: help user troubleshoot  │
+                       │              their linux system.     │
+                       │                                      │
+                       │ sub_agents: general_health_agent,    │
+                       │             apache_agent             │
+                       └──────────────────────────────────────┘
+
+        ┌───────────────────────────────┐    ┌─────────────────────────────────┐
+        │      general_health_agent     │    │           apache_agent          │
+        │                               │    │                                 │
+        │  instruction: ...             │    │ instruction: ...                │
+        │                               │    │                                 │
+        │  tools: free_memory,          │    │ tools: get_systemctl_status,    │
+        │         failed_systemd_units, │    │        firewall_cmd_list_ports, │
+        │         ...                   │    │        ...                      │
+        └───────────────────────────────┘    └─────────────────────────────────┘
+```
 The [root_agent](linux_agent/agent.py) takes the user prompt and delegates to the [sub-agent](linux_agent/sub_agents) it thinks best based on their descriptions. The sub-agent runs with its own context and specific instructions, using its read-only tools to get information from the system.
 
 The [tools](linux_agent/tools) are very simple - each one executes a common Linux command and returns the standard output to the LLM. Since LLMs have lots of Linux commands/outputs in their training data, they are usually able to make a good determination. A sub-agent is able to transfer control to another peer sub-agent, and each one will report to the user if they find something that might be the root-cause.
