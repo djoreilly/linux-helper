@@ -1,6 +1,6 @@
 # Linux troubleshooting assistant
 
-AI-driven agent for troubleshooting Linux problems. Built on the [Google ADK framework](https://google.github.io/adk-docs/) as a [Multi-Agent System](https://google.github.io/adk-docs/agents/multi-agents/).
+AI-driven agent for troubleshooting Linux problems PoC. Built on the [Google ADK framework](https://google.github.io/adk-docs/) as a [Multi-Agent System](https://google.github.io/adk-docs/agents/multi-agents/).
 The project structure follows the [Python Sample Agents](https://github.com/google/adk-samples/tree/main/python/agents).
 
 ## Overview
@@ -18,14 +18,14 @@ The project structure follows the [Python Sample Agents](https://github.com/goog
         ┌───────────────────────────────┐    ┌─────────────────────────────────┐
         │      general_health_agent     │    │           apache_agent          │
         │                               │    │                                 │
-        │  instruction: ...             │    │ instruction: ...                │
+        │  instruction: Use the tools...│    │ instruction: Use the get_sys... │
         │                               │    │                                 │
         │  tools: free_memory,          │    │ tools: get_systemctl_status,    │
         │         failed_systemd_units, │    │        firewall_cmd_list_ports, │
         │         ...                   │    │        ...                      │
         └───────────────────────────────┘    └─────────────────────────────────┘
 ```
-The [root_agent](linux_agent/agent.py) takes the user prompt and delegates to the [sub-agent](linux_agent/sub_agents) it thinks best based on their descriptions. The sub-agent runs with its own context and specific instructions, using its read-only tools to get information from the system.
+This is a PoC and only has a couple of sub-agents. The [root_agent](linux_agent/agent.py) takes the user prompt and delegates to the [sub-agent](linux_agent/sub_agents) it thinks best based on their descriptions. The sub-agent runs with its own context and specific instructions, using its read-only tools to get information from the system.
 
 The [tools](linux_agent/tools) are very simple - each one executes a common Linux command and returns the standard output to the LLM. Since LLMs have lots of Linux commands/outputs in their training data, they are usually able to make a good determination. A sub-agent is able to transfer control to another peer sub-agent, and each one will report to the user if they find something that might be the root-cause.
 
