@@ -102,3 +102,5 @@ Running agent linux_troubleshooter, type exit to exit.
 [apache_agent]: The Apache webserver is failing to start because another process, `nc` with PID 11311 and user root, is already using port 80. To resolve this, you need to stop the `nc` process or reconfigure it to use a different port so that Apache can bind to port 80.
 [user]: exit
 ```
+## Evaluation
+Follow the [doc](https://google.github.io/adk-docs/evaluate/#second-approach-using-an-evalset-file) to create a EvalSet using the UI. Start a session and run a prompt like "Is Apache running?" and add the session to the EvalSet. Then run the EvalSet and it will check that the same agent trajectory and toolcalls as the recorded session were run (`tool_trajectory_avg_score` is 1.0, requires 100% to pass). The `response_match_score` criteria needs to be low, like 0.2, as there are many ways the LLM can say that the Apache service is running.
