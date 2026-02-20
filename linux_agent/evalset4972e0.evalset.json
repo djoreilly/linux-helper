@@ -1,0 +1,109 @@
+{
+  "eval_set_id": "evalset4972e0",
+  "name": "evalset4972e0",
+  "eval_cases": [
+    {
+      "eval_id": "case841f89",
+      "conversation": [
+        {
+          "invocation_id": "e-6596ab81-8858-4159-8086-ad9dd5bb1e4f",
+          "user_content": {
+            "parts": [
+              {
+                "text": "is apache running"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Yes, apache2 is running. The output of `systemctl status apache2` shows that the service is active (running).\n"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "linux_troubleshooter",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-0dfc0b2b-d28c-4ba1-859d-67933273be50",
+                        "args": {
+                          "agent_name": "apache_agent"
+                        },
+                        "name": "transfer_to_agent"
+                      }
+                    }
+                  ],
+                  "role": "model"
+                }
+              },
+              {
+                "author": "linux_troubleshooter",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-0dfc0b2b-d28c-4ba1-859d-67933273be50",
+                        "name": "transfer_to_agent",
+                        "response": {
+                          "result": null
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              },
+              {
+                "author": "apache_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-af5fc7af-8fd6-48c9-86a5-f78a387a9c22",
+                        "args": {
+                          "unit": "apache2"
+                        },
+                        "name": "get_systemctl_status"
+                      }
+                    }
+                  ],
+                  "role": "model"
+                }
+              },
+              {
+                "author": "apache_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-af5fc7af-8fd6-48c9-86a5-f78a387a9c22",
+                        "name": "get_systemctl_status",
+                        "response": {
+                          "result": "● apache2.service - The Apache Webserver\n     Loaded: loaded (/usr/lib/systemd/system/apache2.service; enabled; preset: disabled)\n     Active: active (running) since Thu 2026-02-12 16:00:03 CET; 1 week 0 days ago\n Invocation: a33022ac314a47fab35f12c1d39a7d97\n   Main PID: 7215 (httpd-prefork)\n     Status: \"Total requests: 0; Idle/Busy workers 100/0;Requests/sec: 0; Bytes served/sec:   0 B/sec\"\n      Tasks: 6\n        CPU: 30.834s\n     CGroup: /system.slice/apache2.service\n             ├─7215 /usr/sbin/httpd-prefork -DSYSCONFIG -C \"PidFile /run/httpd.pid\" -C \"Include /etc/apache2/sysconfig.d//loadmodule.conf\" -C \"Include /etc/apache2/sysconfig.d//global.conf\" -f /etc/apache2/httpd.conf -c \"Include /etc/apache2/sysconfig.d//include.conf\" -DSYSTEMD -DFOREGROUND -k start\n             ├─7230 /usr/sbin/httpd-prefork -DSYSCONFIG -C \"PidFile /run/httpd.pid\" -C \"Include /etc/apache2/sysconfig.d//loadmodule.conf\" -C \"Include /etc/apache2/sysconfig.d//global.conf\" -f /etc/apache2/httpd.conf -c \"Include /etc/apache2/sysconfig.d//include.conf\" -DSYSTEMD -DFOREGROUND -k start\n             ├─7231 /usr/sbin/httpd-prefork -DSYSCONFIG -C \"PidFile /run/httpd.pid\" -C \"Include /etc/apache2/sysconfig.d//loadmodule.conf\" -C \"Include /etc/apache2/sysconfig.d//global.conf\" -f /etc/apache2/httpd.conf -c \"Include /etc/apache2/sysconfig.d//include.conf\" -DSYSTEMD -DFOREGROUND -k start\n             ├─7232 /usr/sbin/httpd-prefork -DSYSCONFIG -C \"PidFile /run/httpd.pid\" -C \"Include /etc/apache2/sysconfig.d//loadmodule.conf\" -C \"Include /etc/apache2/sysconfig.d//global.conf\" -f /etc/apache2/httpd.conf -c \"Include /etc/apache2/sysconfig.d//include.conf\" -DSYSTEMD -DFOREGROUND -k start\n             ├─7233 /usr/sbin/httpd-prefork -DSYSCONFIG -C \"PidFile /run/httpd.pid\" -C \"Include /etc/apache2/sysconfig.d//loadmodule.conf\" -C \"Include /etc/apache2/sysconfig.d//global.conf\" -f /etc/apache2/httpd.conf -c \"Include /etc/apache2/sysconfig.d//include.conf\" -DSYSTEMD -DFOREGROUND -k start\n             └─7234 /usr/sbin/httpd-prefork -DSYSCONFIG -C \"PidFile /run/httpd.pid\" -C \"Include /etc/apache2/sysconfig.d//loadmodule.conf\" -C \"Include /etc/apache2/sysconfig.d//global.conf\" -f /etc/apache2/httpd.conf -c \"Include /etc/apache2/sysconfig.d//include.conf\" -DSYSTEMD -DFOREGROUND -k start\n\nFeb 12 16:00:02 leapai systemd[1]: Starting The Apache Webserver...\nFeb 12 16:00:03 leapai systemd[1]: Started The Apache Webserver.\n"
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1771514752.369523
+        }
+      ],
+      "session_input": {
+        "app_name": "linux_agent",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1771514783.6247847
+    }
+  ],
+  "creation_timestamp": 1771514776.973218
+}

@@ -103,4 +103,40 @@ Running agent linux_troubleshooter, type exit to exit.
 [user]: exit
 ```
 ## Evaluation
-Follow the [doc](https://google.github.io/adk-docs/evaluate/#second-approach-using-an-evalset-file) to create a EvalSet using the UI. Start a session and run a prompt like "Is Apache running?" and add the session to the EvalSet. Then run the EvalSet and it will check that the same agent trajectory and toolcalls as the recorded session were run (`tool_trajectory_avg_score` is 1.0, requires 100% to pass). The `response_match_score` criteria needs to be low, like 0.2, as there are many ways the LLM can say that the Apache service is running.
+Follow the [doc](https://google.github.io/adk-docs/evaluate/#second-approach-using-an-evalset-file) to create a EvalSet using the UI. Start a session and run a prompt like "Is Apache running?" and add the session to the EvalSet - see [example](linux_agent/evalset4972e0.evalset.json). Then run the EvalSet and it will check that the same agent trajectory and toolcalls as the recorded session were run (`tool_trajectory_avg_score` is 1.0, requires 100% to pass). The [response_match_score](https://google.github.io/adk-docs/evaluate/criteria/#response_match_score) criteria needs to be low, like 0.2 in this case. Instead use the [final_response_match_v2](https://google.github.io/adk-docs/evaluate/criteria/#final_response_match_v2) criteria by creating a [EvalConfig](eval-config.json) and run like:
+```bash
+(linux-helper) doreilly@leapai:~/linux-helper> adk eval --print_detailed_results --config_file_path eval-config.json linux_agent linux_agent/evalset4972e0.evalset.json
+...
+*********************************************************************
+Eval Run Summary
+evalset4972e0:
+  Tests passed: 1
+  Tests failed: 0
+********************************************************************
+Eval Set Id: evalset4972e0
+Eval Id: case841f89
+Overall Eval Status: PASSED
+---------------------------------------------------------------------
+Metric: final_response_match_v2, Status: PASSED, Score: 1.0, Threshold: 0.8
+---------------------------------------------------------------------
+Metric: tool_trajectory_avg_score, Status: PASSED, Score: 1.0, Threshold: 1.0
+---------------------------------------------------------------------
+Invocation Details:
++----+-------------------+--------------------------+--------------------------+---------------------------+---------------------------+---------------------------+-----------------------------+
+|    | prompt            | expected_response        | actual_response          | expected_tool_calls       | actual_tool_calls         | final_response_match_v2   | tool_trajectory_avg_score   |
++====+===================+==========================+==========================+===========================+===========================+===========================+=============================+
+|  0 | is apache running | Yes, apache2 is running. | Yes, Apache is running.  | id='adk-0dfc0b2b-d28c-4ba | id='adk-bf6b4c8f-5562-4d8 | Status: PASSED, Score:    | Status: PASSED, Score:      |
+|    |                   | The output of `systemctl | The `apache2.service` is | 1-859d-67933273be50'      | 7-be37-169373b23778'      | 1.0                       | 1.0                         |
+|    |                   | status apache2` shows    | active and has been      | args={'agent_name':       | args={'agent_name':       |                           |                             |
+|    |                   | that the service is      | running for 1 week and 0 | 'apache_agent'}           | 'apache_agent'}           |                           |                             |
+|    |                   | active (running).        | days.                    | name='transfer_to_agent'  | name='transfer_to_agent'  |                           |                             |
+|    |                   |                          |                          | partial_args=None         | partial_args=None         |                           |                             |
+|    |                   |                          |                          | will_continue=None        | will_continue=None id='ad |                           |                             |
+|    |                   |                          |                          | id='adk-af5fc7af-8fd6-48c | k-a780798a-1ba8-4f2f-9e91 |                           |                             |
+|    |                   |                          |                          | 9-86a5-f78a387a9c22'      | -6477743a400e'            |                           |                             |
+|    |                   |                          |                          | args={'unit': 'apache2'}  | args={'unit': 'apache2'}  |                           |                             |
+|    |                   |                          |                          | name='get_systemctl_statu | name='get_systemctl_statu |                           |                             |
+|    |                   |                          |                          | s' partial_args=None      | s' partial_args=None      |                           |                             |
+|    |                   |                          |                          | will_continue=None        | will_continue=None        |                           |                             |
++----+-------------------+--------------------------+--------------------------+---------------------------+---------------------------+---------------------------+-----------------------------+
+```
