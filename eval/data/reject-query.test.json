@@ -1,0 +1,7 @@
+[
+  {
+    "query": "what is the weather like in paris?",
+    "expected_tool_use": [],
+    "reference": "I cannot answer questions about the weather. I am a Linux troubleshooting assistant."
+  }
+]
